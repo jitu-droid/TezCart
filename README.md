@@ -2,7 +2,7 @@
 
 A prototype e-commerce web application built with microservices architecture, containerized with Docker, and orchestrated using Kubernetes.
 
-## 🏗️ Architecture
+##  Architecture
 
 TezCart consists of the following microservices:
 
@@ -14,16 +14,16 @@ TezCart consists of the following microservices:
 - **Admin Service** (Port 3005) - Admin dashboard operations
 - **Frontend** (Port 3007) - React-based user interface
 
-## 📋 Prerequisites
+##  Prerequisites
 
 - Node.js (v16 or higher)
 - npm or yarn
 - Docker (for containerization)
 - Kubernetes/Minikube (for orchestration)
 
-## 🚀 Getting Started
+##  Getting Started
 
-### Option 1: Docker (Recommended) 🐳
+### Option 1: Docker (Recommended) 
 
 **Easiest way to run the entire application:**
 
@@ -118,7 +118,7 @@ npm start
 
 ---
 
-## 🎯 Features
+##  Features
 
 ### User Features
 - User registration and login
@@ -173,7 +173,7 @@ npm start
 
 See [API Documentation](docs/API.md) for complete API reference.
 
-## 🐳 Docker Deployment
+##  Docker Deployment
 
 ### Quick Start
 ```powershell
@@ -188,15 +188,15 @@ docker-compose down
 ```
 
 ### Features
-- ✅ All services containerized
-- ✅ Docker Compose orchestration
-- ✅ Multi-stage builds for optimized images
-- ✅ Internal networking for service communication
-- ✅ Easy scaling and deployment
+-  All services containerized
+-  Docker Compose orchestration
+-  Multi-stage builds for optimized images
+-  Internal networking for service communication
+-  Easy scaling and deployment
 
 See [Docker Deployment Guide](docs/DOCKER.md) for detailed instructions.
 
-## ☸️ Kubernetes Deployment
+##  Kubernetes Deployment
 
 ### Quick Start
 ```powershell
@@ -214,16 +214,16 @@ kubectl apply -f k8s/hpa/
 ```
 
 ### Features
-- ✅ Complete Kubernetes manifests
-- ✅ Namespace isolation (tezcart)
-- ✅ ConfigMap for configuration
-- ✅ Secrets for sensitive data
-- ✅ Health probes (liveness & readiness)
-- ✅ Resource limits and requests
-- ✅ Horizontal Pod Autoscaling (HPA)
-- ✅ LoadBalancer services for external access
-- ✅ Ingress for routing
-- ✅ 2 replicas per service (1 for admin)
+-  Complete Kubernetes manifests
+-  Namespace isolation (tezcart)
+-  ConfigMap for configuration
+-  Secrets for sensitive data
+-  Health probes (liveness & readiness)
+-  Resource limits and requests
+-  Horizontal Pod Autoscaling (HPA)
+-  LoadBalancer services for external access
+-  Ingress for routing
+-  2 replicas per service (1 for admin)
 
 ### Access Application
 ```powershell
@@ -238,7 +238,7 @@ kubectl port-forward -n tezcart service/api-gateway 3000:3000
 
 See [Kubernetes Deployment Guide](k8s/README.md) for comprehensive instructions.
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 TezCart/
@@ -257,7 +257,7 @@ TezCart/
 └── README.md
 ```
 
-## 🔒 Security Note
+##  Security Note
 
 This is a prototype application for educational purposes. In a production environment:
 - Use proper authentication and authorization
@@ -268,7 +268,7 @@ This is a prototype application for educational purposes. In a production enviro
 - Use environment variables for sensitive data
 - Implement proper error handling
 
-## 🧪 Testing
+##  Testing
 
 To test the application:
 1. Start all services
@@ -278,17 +278,17 @@ To test the application:
 5. Place an order
 6. Login as admin (admin/admin123) at admin panel
 
-## 📝 Development Notes
+##  Development Notes
 
 - All services use in-memory storage (no persistent database)
 - Data will be lost when services restart
 - This is intentional for prototype simplicity
 - Production version should use MongoDB or similar
 
-## 🤝 Contributing
+##  Contributing
 
 This is an academic project. Feel free to fork and enhance!
 
-## 📄 License
+##  License
 
 ISC License - Free to use for educational purposes
