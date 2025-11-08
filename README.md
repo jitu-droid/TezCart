@@ -137,7 +137,7 @@ npm start
 - Update order status
 - Dashboard statistics
 
-## 📚 API Endpoints
+## API Endpoints
 
 ### User Service (via /api/users)
 - `POST /register` - Register new user
