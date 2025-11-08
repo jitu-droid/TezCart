@@ -1,0 +1,121 @@
+version: '3.8'
+
+services:
+  # User Service
+  user-service:
+    build:
+      context: ./services/user-service
+      dockerfile: Dockerfile
+    container_name: tezcart-user-service
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - JWT_SECRET=tezcart-secret-key
+    networks:
+      - tezcart-network
+    restart: unless-stopped
+
+  # Product Service
+  product-service:
+    build:
+      context: ./services/product-service
+      dockerfile: Dockerfile
+    container_name: tezcart-product-service
+    ports:
+      - "3002:3002"
+    environment:
+      - PORT=3002
+    networks:
+      - tezcart-network
+    restart: unless-stopped
+
+  # Cart Service
+  cart-service:
+    build:
+      context: ./services/cart-service
+      dockerfile: Dockerfile
+    container_name: tezcart-cart-service
+    ports:
+      - "3003:3003"
+    environment:
+      - PORT=3003
+    networks:
+      - tezcart-network
+    restart: unless-stopped
+
+  # Order Service
+  order-service:
+    build:
+      context: ./services/order-service
+      dockerfile: Dockerfile
+    container_name: tezcart-order-service
+    ports:
+      - "3004:3004"
+    environment:
+      - PORT=3004
+    networks:
+      - tezcart-network
+    restart: unless-stopped
+
+  # Admin Service
+  admin-service:
+    build:
+      context: ./services/admin-service
+      dockerfile: Dockerfile
+    container_name: tezcart-admin-service
+    ports:
+      - "3005:3005"
+    environment:
+      - PORT=3005
+      - PRODUCT_SERVICE_URL=http://product-service:3002
+      - ORDER_SERVICE_URL=http://order-service:3004
+    networks:
+      - tezcart-network
+    depends_on:
+      - product-service
+      - order-service
+    restart: unless-stopped
+
+  # API Gateway
+  api-gateway:
+    build:
+      context: ./services/api-gateway
+      dockerfile: Dockerfile
+    container_name: tezcart-api-gateway
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - USER_SERVICE_URL=http://user-service:3001
+      - PRODUCT_SERVICE_URL=http://product-service:3002
+      - CART_SERVICE_URL=http://cart-service:3003
+      - ORDER_SERVICE_URL=http://order-service:3004
+      - ADMIN_SERVICE_URL=http://admin-service:3005
+    networks:
+      - tezcart-network
+    depends_on:
+      - user-service
+      - product-service
+      - cart-service
+      - order-service
+      - admin-service
+    restart: unless-stopped
+
+  # Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: tezcart-frontend
+    ports:
+      - "8080:80"
+    networks:
+      - tezcart-network
+    depends_on:
+      - api-gateway
+    restart: unless-stopped
+
+networks:
+  tezcart-network:
+    driver: bridge

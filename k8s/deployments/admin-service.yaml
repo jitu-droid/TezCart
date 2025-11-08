@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: admin-service
+  namespace: tezcart
+  labels:
+    app: admin-service
+    tier: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: admin-service
+  template:
+    metadata:
+      labels:
+        app: admin-service
+        tier: backend
+    spec:
+      containers:
+      - name: admin-service
+        image: tezcart/admin-service:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3005
+          name: http
+        env:
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: tezcart-config
+              key: ADMIN_SERVICE_PORT
+        - name: ADMIN_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: tezcart-secrets
+              key: ADMIN_USERNAME
+        - name: ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tezcart-secrets
+              key: ADMIN_PASSWORD
+        - name: PRODUCT_SERVICE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: tezcart-config
+              key: PRODUCT_SERVICE_URL
+        - name: ORDER_SERVICE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: tezcart-config
+              key: ORDER_SERVICE_URL
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3005
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3005
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3

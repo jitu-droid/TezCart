@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway
+  namespace: tezcart
+  labels:
+    app: api-gateway
+    tier: gateway
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: api-gateway
+  template:
+    metadata:
+      labels:
+        app: api-gateway
+        tier: gateway
+    spec:
+      containers:
+      - name: api-gateway
+        image: tezcart/api-gateway:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3000
+          name: http
+        env:
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: tezcart-config
+              key: API_GATEWAY_PORT
+        - name: USER_SERVICE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: tezcart-config
+              key: USER_SERVICE_URL
+        - name: PRODUCT_SERVICE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: tezcart-config
+              key: PRODUCT_SERVICE_URL
+        - name: CART_SERVICE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: tezcart-config
+              key: CART_SERVICE_URL
+        - name: ORDER_SERVICE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: tezcart-config
+              key: ORDER_SERVICE_URL
+        - name: ADMIN_SERVICE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: tezcart-config
+              key: ADMIN_SERVICE_URL
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
